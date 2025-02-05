@@ -17,7 +17,7 @@
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/kuruvt/com.kuru.forge.git"
+    "url": "https://github.com/kuruvt/com.kuru.forge.git#dev"
   },
   "documentationUrl": "https://github.com/kuruvt/com.kuru.forge/wiki"
 }
