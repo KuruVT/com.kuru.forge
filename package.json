@@ -6,7 +6,7 @@
   },
   "displayName": "Forge",
   "description": "Forge provides tools for modding Halo Wars: Definitive Edition.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "unity": "2020.0",
   "keywords": [
     "modding",
