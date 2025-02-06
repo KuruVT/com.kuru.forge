@@ -1,10 +1,7 @@
 {
-    "name": "Editor",
-    "rootNamespace": "",
-    "references": [
-        "GUID:067c54818031ba149a02b9fe449a695a",
-        "GUID:43c77cd98528a454f939aabf8f6c626f"
-    ],
+    "name": "StandaloneFileBrowser",
+    "rootNamespace": "SFB",
+    "references": [],
     "includePlatforms": [
         "Editor"
     ],

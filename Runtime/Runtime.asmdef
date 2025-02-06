@@ -1,13 +1,10 @@
 {
-    "name": "Editor",
-    "rootNamespace": "",
+    "name": "Runtime",
+    "rootNamespace": "Forge",
     "references": [
-        "GUID:067c54818031ba149a02b9fe449a695a",
         "GUID:43c77cd98528a454f939aabf8f6c626f"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
