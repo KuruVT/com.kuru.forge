@@ -1,4 +1,14 @@
-﻿namespace Forge
+﻿using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
+
+using UnityEditor;
+
+using UnityEngine;
+
+using Debug = UnityEngine.Debug;
+
+namespace Forge
 {
     public static class Decompiler
     {
@@ -6,25 +16,14 @@
 
         private static string GetToolPath()
         {
-            // Path for local development inside Assets
             string assetPath = Path.Combine(Application.dataPath, "com.kuru.forge/Tools/PhxTool/PhxTool.exe");
-
-            // Path for Unity Package
             string packagePath = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Library/PackageCache/com.kuru.forge/Tools/PhxTool/PhxTool.exe");
 
-            if (File.Exists(assetPath))
-            {
-                return assetPath;
-            }
-            else if (File.Exists(packagePath))
-            {
-                return packagePath;
-            }
-            else
-            {
-                Debug.LogError("PhxTool.exe not found in either Assets or Packages!");
-                return string.Empty;
-            }
+            if (File.Exists(assetPath)) return assetPath;
+            if (File.Exists(packagePath)) return packagePath;
+
+            Debug.LogError("PhxTool.exe not found in either Assets or Packages!");
+            return string.Empty;
         }
 
         public static async Task FromEra(string[] files, string outputPath)
@@ -43,6 +42,10 @@
                 EditorUtility.DisplayProgressBar("Decompiling ERA Files", $"Decrypting {fileName}...", progress);
                 await ProcessEraFile(files[i], outputPath);
             }
+
+            // Clean up XMB files after processing
+            EditorUtility.DisplayProgressBar("Decompiling ERA Files", "Cleaning up XMB files...", 1f);
+            CleanUpXMBFiles(outputPath);
 
             EditorUtility.ClearProgressBar();
         }
@@ -93,6 +96,23 @@
                     process.WaitForExit();
                 }
             });
+        }
+
+        private static void CleanUpXMBFiles(string directoryPath)
+        {
+            string[] xmbFiles = Directory.GetFiles(directoryPath, "*.xmb", SearchOption.AllDirectories);
+
+            foreach (string xmbFile in xmbFiles)
+            {
+                try
+                {
+                    File.Delete(xmbFile);
+                }
+                catch (IOException e)
+                {
+                    Debug.LogError($"Failed to delete XMB file: {xmbFile}. Error: {e.Message}");
+                }
+            }
         }
     }
 }

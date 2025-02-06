@@ -69,8 +69,7 @@ public class ImportWindow : EditorWindow
 
     private async void ApplyImport()
     {
-        await Project.Create(projectName);
-        await Project.Import(ImportType.Era, importFiles.ToArray(), Path.Combine(Directory.GetParent(Application.dataPath).FullName, projectName));
+        await Project.Create(Path.Combine(Directory.GetParent(Application.dataPath).FullName, projectName), ImportType.Era, importFiles.ToArray());
 
 
         Close();

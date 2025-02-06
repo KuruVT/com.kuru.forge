@@ -1,7 +1,4 @@
-using System.IO;
 using System.Threading.Tasks;
-
-using UnityEngine;
 
 namespace Forge
 {
@@ -13,19 +10,19 @@ namespace Forge
             Folder
         }
 
-        public static async Task Create(string name, ImportType type, string[] files)
+        public static async Task Create(string path, ImportType type, string[] files)
         {
-            await Import(type, files, name);
+            await Import(type, files, path);
 
             await Task.Yield();
         }
 
-        public static async Task Import(ImportType type, string[] files, string name)
+        public static async Task Import(ImportType type, string[] files, string path)
         {
             switch (type)
             {
                 case ImportType.Era:
-                    await Decompiler.FromEra(files, name);
+                    await Decompiler.FromEra(files, path);
                     break;
                 case ImportType.Folder:
                     break;
