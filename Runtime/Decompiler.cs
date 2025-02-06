@@ -1,20 +1,35 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
-
-using UnityEditor;
-
-using UnityEngine;
-
-namespace Forge
+﻿namespace Forge
 {
     public static class Decompiler
     {
-        private static readonly string ToolPath = Path.Combine(Application.dataPath, "com.kuru.forge/Tools/PhxTool/PhxTool.exe");
+        private static readonly string ToolPath = GetToolPath();
+
+        private static string GetToolPath()
+        {
+            // Path for local development inside Assets
+            string assetPath = Path.Combine(Application.dataPath, "com.kuru.forge/Tools/PhxTool/PhxTool.exe");
+
+            // Path for Unity Package
+            string packagePath = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Library/PackageCache/com.kuru.forge/Tools/PhxTool/PhxTool.exe");
+
+            if (File.Exists(assetPath))
+            {
+                return assetPath;
+            }
+            else if (File.Exists(packagePath))
+            {
+                return packagePath;
+            }
+            else
+            {
+                Debug.LogError("PhxTool.exe not found in either Assets or Packages!");
+                return string.Empty;
+            }
+        }
 
         public static async Task FromEra(string[] files, string outputPath)
         {
-            if (!File.Exists(ToolPath))
+            if (string.IsNullOrEmpty(ToolPath) || !File.Exists(ToolPath))
                 return;
 
             if (!Directory.Exists(outputPath))

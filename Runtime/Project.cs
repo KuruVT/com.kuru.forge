@@ -13,10 +13,9 @@ namespace Forge
             Folder
         }
 
-        public static async Task Create(string name)
+        public static async Task Create(string name, ImportType type, string[] files)
         {
-            string projectPath = Path.Combine(Application.dataPath, name);
-            Directory.CreateDirectory(projectPath);
+            await Import(type, files, name);
 
             await Task.Yield();
         }
