@@ -1,0 +1,23 @@
+{
+  "name": "com.kuru.forge",
+  "author": {
+    "name": "Kuru",
+    "url": "https://github.com/kuruvt"
+  },
+  "displayName": "Forge",
+  "description": "Forge provides tools for modding Halo Wars: Definitive Edition.",
+  "version": "0.0.2",
+  "unity": "2020.0",
+  "keywords": [
+    "modding",
+    "halo",
+    "halo-wars",
+    "tools"
+  ],
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kuruvt/com.kuru.forge.git#dev"
+  },
+  "documentationUrl": "https://github.com/kuruvt/com.kuru.forge/wiki"
+}
