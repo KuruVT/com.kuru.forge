@@ -1,0 +1,8 @@
+# Exclude solution files
+*.sln
+.vs
+
+# Exclude Git-related files
+.gitattributes
+.gitignore
+.git

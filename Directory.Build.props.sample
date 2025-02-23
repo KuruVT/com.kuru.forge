@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+     <!-- Update the value below to your local output directory -->
+    <ForgePackageOutput>D:\Engines\UnityProjects\com.kuru.forge.dev\Packages\com.kuru.forge\</ForgePackageOutput>
+    <ForgePackageEditorOutput>$(ForgePackageOutput)\Editor</ForgePackageEditorOutput>
+  </PropertyGroup>
+</Project>
