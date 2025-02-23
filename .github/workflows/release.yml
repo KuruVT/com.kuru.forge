@@ -1,0 +1,75 @@
+name: Build and Release Forge Package
+
+on:
+  push:
+    branches:
+      - dev
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Release Tag and Prerelease Flag
+        id: set_release_tag
+        run: |
+          # Get the branch name from the Git ref
+          BRANCH=${GITHUB_REF#refs/heads/}
+          echo "Running on branch: $BRANCH"
+
+          # Extract the version from package.json (e.g., "0.1.0")
+          VERSION=$(jq -r '.version' package.json)
+          echo "Extracted version: $VERSION"
+
+          # Set the release tag to include the version (e.g., "v0.1.0")
+          echo "release_tag=v${VERSION}" >> $GITHUB_ENV
+
+          # Set prerelease flag: true for dev branch, false for master
+          if [ "$BRANCH" = "dev" ]; then
+            echo "prerelease=true" >> $GITHUB_ENV
+          else
+            echo "prerelease=false" >> $GITHUB_ENV
+          fi
+          echo "Release tag set to: v${VERSION}"
+      
+      - name: Build .sin Projects
+        run: |
+          echo "Building .sin projects..."
+          # Replace the command below with your actual build command(s)
+          ./build.sh
+
+      - name: Prepare Release Artifacts
+        run: |
+          # Use the release tag from the environment to name the output folder
+          RELEASE_DIR="Forge ${{ env.release_tag }}"
+          echo "Creating release folder: $RELEASE_DIR"
+          mkdir "$RELEASE_DIR"
+          # Copy build outputs into the release folder.
+          # Update 'build_output' to the correct path where your build artifacts are located.
+          cp -R build_output/* "$RELEASE_DIR/"
+          # Create a zip archive of the release folder.
+          zip -r "${RELEASE_DIR}.zip" "$RELEASE_DIR"
+
+      - name: Create or Update GitHub Release
+        id: create_release
+        uses: softprops/create-release@v1
+        with:
+          tag_name: ${{ env.release_tag }}
+          release_name: "Forge ${{ env.release_tag }}"
+          draft: false
+          prerelease: ${{ env.prerelease }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Asset
+        uses: softprops/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: "./Forge ${{ env.release_tag }}.zip"
+          asset_name: "Forge ${{ env.release_tag }}.zip"
+          asset_content_type: application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
